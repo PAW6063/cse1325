@@ -32,12 +32,12 @@ int main() {
     std::istringstream iss{sfi};
     Fraction fi;
     iss >> fi;
-    if (fi != Fraction{-13, 255}) {
+	if (fi != Fraction{-13, 255}) {
         std::cerr << "FAIL: Stream in\n";
         result |= vector;
     }
     vector <<= 1;
-/*
+
     // Reduce testing    
     // Test reduce() handling of a negative denominator
     if (f2 != Fraction{-3, 4}) {
@@ -99,4 +99,4 @@ int main() {
     // Report the test results to the user and OS
     if(result) std::cerr << "\nFAILED - result is " << std::hex << std::showbase << result << std::endl;
     return result;
-*/}
+}

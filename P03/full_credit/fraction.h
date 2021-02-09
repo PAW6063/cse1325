@@ -19,7 +19,7 @@ class Fraction {
 	
 	friend std::ostream& operator<<(std::ostream& ost, Fraction& m);
 	friend std::istream& operator>>(std::istream& ist, Fraction& m);
-	friend bool operator!=(const Fraction& lhs, const Fraction&);
+	friend bool operator!=(const Fraction& lhs, const Fraction& rhs);
 	
 	private :
 	int _numerator;
