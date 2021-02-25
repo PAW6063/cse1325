@@ -16,6 +16,7 @@ class Card {
     private :
     std::string _question;
     std::string _answer;
-}
+};
 
 #endif
+

@@ -16,5 +16,8 @@ Deck.o : Deck.cpp *.h
 Card.o : Card.cpp *.h
 	$(CXX) $(CXXFLAGS) -c Card.cpp -o Card.o
 
+debug : Card.cpp *h main.cpp Deck.cpp
+	$(CXX) $(CXXFLAGS) -g -c main.cpp Deck.cpp Card.cpp
+
 clean :
 	rm -f *~ *.ghc *.o a.out test flashcards
