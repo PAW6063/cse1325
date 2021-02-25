@@ -27,17 +27,21 @@ std::vector<std::string> Deck::options(){
 
 Card Deck::deal(){
 	
+	_next_card++;
+	
 	if(_cards.size() == 0){
+	
 		throw std::runtime_error{"No cards added!"};
 	}else{
-		if(_next_card > _cards.size()){
+	
+		if(_next_card >= _cards.size()){
+			
 			std::random_shuffle(_cards.begin(), _cards.end());
 			_next_card = 0;
 		}
 		
-		_next_card++;
 		
-		return _cards[(_next_card - 1)];
+		return _cards[_next_card];
 	}
 }
 
