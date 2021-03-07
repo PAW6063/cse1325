@@ -11,7 +11,7 @@ Parent& Student::parent(int index) { return *(_parents[index]); }
 
 std::string Student::full_info() {
 	std::string all_parents;
-	for(int i = 0; i < _parents.size(); i++) { all_parents += _parents[i]->to_string() + ", "; }
+	for(int i = 0; i < parents(); i++) { all_parents = all_parents + parent(i).to_string() + ", "; }
 	all_parents[all_parents.size() - 2] = '\0';
 	
 	return Person::full_info() + " grade " + std::to_string(_grade) + " parents: " + all_parents;
