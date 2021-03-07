@@ -1,6 +1,9 @@
 #ifndef __STDUENT_H
 #define __STUDENT_H
 
+#include <vector>
+#include <string>
+#include "person.h"
 
 class Parent;
 

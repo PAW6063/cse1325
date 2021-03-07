@@ -17,5 +17,11 @@ student.o : student.cpp *.h
 parent.o : parent.cpp *.h
 	$(CXX) $(CXXFLAGS) -c parent.cpp -o parent.o
 
+test : example.o person.o student.o parent.o
+	$(CXX) $(CXXFLAGS) example.o person.o student.o parent.o -o test
+
+example.o : example.cpp *.h
+	$(CXX) $(CXXFLAGS) -c example.cpp -o example.o
+
 clean :
-	rm -f *~ *.gch *.o a.out smart
+	rm -f *~ *.gch *.o a.out smart test

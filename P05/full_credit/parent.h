@@ -1,6 +1,8 @@
 #ifndef __PARENT_H
 #define __PARENT_H
 
+#include <vector>
+#include "person.h"
 
 class Student;
 

@@ -1,19 +1,18 @@
 #include "student.h"
+#include "parent.h"
 
+Student::Student(std::string name, std::string email, int grade) : Person{name, email}, _grade{grade} {	}
 
+void Student::add_parent(Parent& parent) { _parents.push_back(&parent); }
 
-Student::Student(std::string name, std::string email, int grade) : Person{name, email}, _grade{grade} {
+int Student::parents() { return _parents.size(); }
+
+Parent& Student::parent(int index) { return *(_parents[index]); }
+
+std::string Student::full_info() {
+	std::string all_parents;
+	for(int i = 0; i < _parents.size(); i++) { all_parents += _parents[i]->to_string() + ", "; }
+	all_parents[all_parents.size() - 2] = '\0';
 	
-}
-void add_parent(Parent& parent) {
-	
-}
-int parents() {
-	
-}
-Parent& parent(int index) {
-	
-}
-std::string full_info() override {
-	
+	return Person::full_info() + " grade " + std::to_string(_grade) + " parents: " + all_parents;
 }
