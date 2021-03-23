@@ -26,6 +26,6 @@ private :
 	std::vector <Parent> parents;
 	
 	void show_data();
-}
+};
 
 #endif

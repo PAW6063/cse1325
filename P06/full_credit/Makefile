@@ -3,8 +3,8 @@ GTKFLAGS = `/usr/bin/pkg-config gtkmm-3.0 --cflags --libs`
 
 all : smart
 
-smart : main.o person.o student.o parent.o
-	$(CXX) $(CXXFLAGS) main.o person.o student.o parent.o mainwin.o entrydialog.o -o smart
+smart : main.o person.o student.o parent.o mainwin.o entrydialog.o
+	$(CXX) $(CXXFLAGS) main.o person.o student.o parent.o mainwin.o entrydialog.o $(GTKFLAGS) -o smart
 
 main.o : main.cpp *.h
 	$(CXX) $(CXXFLAGS) -c main.cpp $(GTKFLAGS) -o main.o
