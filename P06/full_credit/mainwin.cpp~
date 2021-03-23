@@ -1,0 +1,39 @@
+#include "mainwin.h"
+
+
+
+Mainwin::Mainwin() {
+	 
+	 set_default_size(400, 400);
+	 set_title("");
+	 
+	 Gtk::Box *vbox = Gtk::manage(new Gtk::VBox);
+	 add(*vbox);
+	 
+	 Gtk::MenuBar *menu = Gtk::manage(new Gtk::MenuBar);
+	 vbox->pack_start(*menu, PACK_SHRINK, 0);
+	 
+	 Gtk::MenuItem *menuItem_file = Gtk::manage(new Gtk::MenuItem("_File", true));
+	 menu->append(*menuItem_file);
+	 Gtk::Menu *fileMenu = Gtk::manage(new Gtk::Menu());
+	 menuItem_file->submenu(*fileMenu);
+	 
+	 Gtk::MenuItem *menuItem_new_school = Gtk::mangae(new Gtk::MenuItem("_New School", true));
+	 menuItem_new_school->signal_activate().connect([this] {this->on_new_school_click();});
+	 fileMenu->append(*menuItem_new_school);
+}
+
+Mainwin::~Mainwin() {}
+
+void Mainwin::on_new_school_click() {}
+
+void Mainwin::on_new_student_click() {}
+
+void Mainwin::on_new_parent_click() {}
+
+void Mainwin::on_student_parent_click() {}
+
+void Mainwin::on_quit_click() {}
+
+void Mainwin::show_data() {}
+
