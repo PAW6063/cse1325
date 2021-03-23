@@ -111,7 +111,26 @@ void Mainwin::on_new_parent_click() {
 }
 
 void Mainwin::on_student_parent_click() {
+	/*EntryDialog student{*this, "<big><b>Select Student</b></big>", true};
+	for(int i = 0; i < students.size(); i++) {
+		student.set_secondary_text(std::to_string(i) + ")" + students[i].Person::full_info(), true);
+	}
+	student.set_text("#");
+	student.run();
+	int s = std::stoi( student.get_text() );
 	
+	EntryDialog parent{*this, "<big><b>Select Parent</b></big>", true};
+	for(int i = 0; i < parents.size(); i++) {
+		parent.set_secondary_text(std::to_string(i) + ")" + parents[i].Person::full_info(), true);
+	}
+	parent.set_text("#");
+	parent.run();
+	int p = std::stoi( parent.get_text() );
+	
+	students[s].add_parent(parents[p]);
+	parents[p].add_student(students[s]);*/
+	
+	show_data();
 }
 
 void Mainwin::on_quit_click() {
