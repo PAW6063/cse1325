@@ -95,40 +95,47 @@ void Mainwin::on_new_student_click() {
 	grade << entry_grade.get_text().raw();
 	grade >> g;
 	
-	students.push_back(Student{entry_name.get_text(), entry_email.get_text(), g});
+	students.push_back(new Student{entry_name.get_text(), entry_email.get_text(), g});
 	
 	show_data();
 }
 
 void Mainwin::on_new_parent_click() {
 	
-	EntryDialog entry_name{*this, "<big><b>Student name?</b></big>", true}; entry_name.set_text("Enter name!"); entry_name.run();
-	EntryDialog entry_email{*this, "<big><b>Student email?</b></big>", true}; entry_email.set_text("Enter email!"); entry_email.run();
+	EntryDialog entry_name{*this, "<big><b>Parent name?</b></big>", true}; entry_name.set_text("Enter name!"); entry_name.run();
+	EntryDialog entry_email{*this, "<big><b>Parent email?</b></big>", true}; entry_email.set_text("Enter email!"); entry_email.run();
 	
-	parents.push_back(Parent{entry_name.get_text(), entry_email.get_text()});
+	parents.push_back(new Parent{entry_name.get_text(), entry_email.get_text()});
 	
 	show_data();
 }
 
 void Mainwin::on_student_parent_click() {
-	/*EntryDialog student{*this, "<big><b>Select Student</b></big>", true};
+	EntryDialog student{*this, "<big><b>Select Student</b></big>", true};
+	
+	std::string s_string = "";
 	for(int i = 0; i < students.size(); i++) {
-		student.set_secondary_text(std::to_string(i) + ")" + students[i].Person::full_info(), true);
+		s_string += std::to_string(i) + ")" + students[i]->Person::full_info() + "\n";
 	}
+	student.set_secondary_text(s_string, false);
 	student.set_text("#");
 	student.run();
 	int s = std::stoi( student.get_text() );
 	
 	EntryDialog parent{*this, "<big><b>Select Parent</b></big>", true};
+	
+	std::string p_string = "";
 	for(int i = 0; i < parents.size(); i++) {
-		parent.set_secondary_text(std::to_string(i) + ")" + parents[i].Person::full_info(), true);
+		p_string += std::to_string(i) + ")" + parents[i]->Person::full_info() + "\n";
 	}
+	
+	parent.set_secondary_text(p_string, false);
 	parent.set_text("#");
 	parent.run();
 	int p = std::stoi( parent.get_text() );
 	
-	students[s].add_parent(parents[p]);
-	parents[p].add_student(students[s]);*/
+	students[s]->add_parent(*parents[p]);
+	parents[p]->add_student(*students[s]);
 	
 	show_data();
 }
@@ -141,17 +148,17 @@ void Mainwin::show_data() {
 	Glib::ustring data = "";
 	
 	data += "\tStudents\n\n";
-	if(students.size() > 0) {
+	if(students.size() >= 0) {
 		for(auto & i : students) {
-		    data += i.full_info();
+		    data += i->full_info();
 			data += "\n";
 		}
 	}
 	
 	data += "\n\tParents\n\n";
-	if(parents.size() > 0) {
+	if(parents.size() >= 0) {
 		for(auto & i : parents) {
-			data += i.full_info();
+			data += i->full_info();
 			data += "\n";
 		}
 	}

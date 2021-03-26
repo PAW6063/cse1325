@@ -22,8 +22,8 @@ protected :
 	
 private :
 	Gtk::Label *display;
-	std::vector <Student> students;
-	std::vector <Parent> parents;
+	std::vector <Student*> students;
+	std::vector <Parent*> parents;
 	
 	void show_data();
 };
