@@ -1,8 +1,16 @@
 #include "mainwin.h"
 
+#define STUDENT_SIZE 500
+#define PARENT_SIZE 300
+
 
 
 Mainwin::Mainwin() {
+	 
+	 //Set vector size
+	 
+	 //students.reserve(STUDENT_SIZE);
+	 //parents.reserve(PARENT_SIZE);
 	 
 	 //Set window
 	 set_default_size(400, 400);
@@ -95,6 +103,10 @@ void Mainwin::on_new_student_click() {
 	grade << entry_grade.get_text().raw();
 	grade >> g;
 	
+	
+	//**************************
+	//ADDS NEW STUDENT TO HEAP
+	//**************************
 	students.push_back(new Student{entry_name.get_text(), entry_email.get_text(), g});
 	
 	show_data();
@@ -105,6 +117,9 @@ void Mainwin::on_new_parent_click() {
 	EntryDialog entry_name{*this, "<big><b>Parent name?</b></big>", true}; entry_name.set_text("Enter name!"); entry_name.run();
 	EntryDialog entry_email{*this, "<big><b>Parent email?</b></big>", true}; entry_email.set_text("Enter email!"); entry_email.run();
 	
+	//**************************
+	//ADDS NEW PARENT TO HEAP
+	//**************************
 	parents.push_back(new Parent{entry_name.get_text(), entry_email.get_text()});
 	
 	show_data();
@@ -134,10 +149,15 @@ void Mainwin::on_student_parent_click() {
 	parent.run();
 	int p = std::stoi( parent.get_text() );
 	
+	//*************************************
+	// THIS IS WHERE I THINK THE PRBLEM IS
+	//*************************************
 	students[s]->add_parent(*parents[p]);
 	parents[p]->add_student(*students[s]);
 	
 	show_data();
+	
+	
 }
 
 void Mainwin::on_quit_click() {
@@ -147,19 +167,17 @@ void Mainwin::on_quit_click() {
 void Mainwin::show_data() {
 	Glib::ustring data = "";
 	
-	data += "\tStudents\n\n";
-	if(students.size() >= 0) {
+	data += "\tStudents:\n";
+	if(students.size() > 0) {
 		for(auto & i : students) {
-		    data += i->full_info();
-			data += "\n";
+		    data += i->full_info() + "\n";
 		}
 	}
 	
-	data += "\n\tParents\n\n";
-	if(parents.size() >= 0) {
+	data += "\n\tParents:\n";
+	if(parents.size() > 0) {
 		for(auto & i : parents) {
-			data += i->full_info();
-			data += "\n";
+			data += i->full_info() + "\n";
 		}
 	}
 	
