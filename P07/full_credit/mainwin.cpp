@@ -99,6 +99,61 @@ Mainwin::Mainwin() {
 	 menuItem_about->signal_activate().connect([this] {this->on_about_click();});
 	 aboutMenu->append(*menuItem_about);
 	 
+	 //TOOLBAR HERE
+	 //Toolbar build
+	 Gtk::Toolbar *tools = Gtk::manage(new Gtk::Toolbar);
+	 vbox->add(*tools);
+	 
+	 //New School button
+	 Gtk::ToolButton *new_school_button = Gtk::manage(new Gtk::ToolButton(Gtk::Stock::NEW));
+	 new_school_button->set_tooltip_markup("Deletes current school and starts another.");
+	 new_school_button->signal_clicked().connect([this] {this->on_new_school_click();});
+	 tools->append(*new_school_button);
+	 
+	 //Open button
+	 Gtk::ToolButton *open_button = Gtk::manage(new Gtk::ToolButton(Gtk::Stock::OPEN));
+	 open_button->set_tooltip_markup("FilerFinder to open existing file.");
+	 open_button->signal_clicked().connect([this] {this->on_open_click();});
+	 tools->append(*open_button);
+	 
+ 	 //Save Button
+ 	 Gtk::ToolButton *save_button = Gtk::manage(new Gtk::ToolButton(Gtk::Stock::SAVE));
+	 save_button->set_tooltip_markup("Quick Save.");
+	 save_button->signal_clicked().connect([this] {this->on_save_click();});
+	 tools->append(*save_button);
+	 
+	 //Save As Button
+	 Gtk::ToolButton *save_as_button = Gtk::manage(new Gtk::ToolButton(Gtk::Stock::SAVE_AS));
+	 save_as_button->set_tooltip_markup("Save and name file.");
+	 save_as_button->signal_clicked().connect([this] {this->on_save_as_click();});
+	 tools->append(*save_as_button);
+	 
+	 //Separator
+	 Gtk::SeparatorToolItem *sep = Gtk::manage(new Gtk::SeparatorToolItem());
+	 tools->append(*sep);
+	 
+	 //Insert Student
+	 Gtk::Image *add_s_image = Gtk::manage(new Gtk::Image{"plus_s.png"});
+	 Gtk::ToolButton *insert_student_button = Gtk::manage(new Gtk::ToolButton(*add_s_image));
+	 insert_student_button->set_tooltip_markup("Add new student.");
+	 insert_student_button->signal_clicked().connect([this] {this->on_new_student_click();});
+	 tools->append(*insert_student_button);
+	 
+	 //Insert Parents
+	 Gtk::Image *add_p_image = Gtk::manage(new Gtk::Image{"plus_p.png"});
+	 Gtk::ToolButton *insert_parent_button = Gtk::manage(new Gtk::ToolButton(*add_p_image));
+	 insert_parent_button->set_tooltip_markup("Add new parent.");
+	 insert_parent_button->signal_clicked().connect([this] {this->on_new_parent_click();});
+	 tools->append(*insert_parent_button);
+	 
+	 //Relate Button
+ 	 Gtk::Image *relate_image = Gtk::manage(new Gtk::Image{"relate.png"});
+	 Gtk::ToolButton *relate_button = Gtk::manage(new Gtk::ToolButton(*relate_image));
+	 relate_button->set_tooltip_markup("Link student and parent.");
+	 relate_button->signal_clicked().connect([this] {this->on_student_parent_click();});
+	 tools->append(*relate_button);
+	 
+	  
 	 //DISPLAY
 	 display = Gtk::manage(new Gtk::Label());
 	 display->set_hexpand(true);
@@ -238,16 +293,16 @@ void Mainwin::on_save_as_click() {
 	saveFile.set_transient_for(*this);
 	
 	auto filter_smart = Gtk::FileFilter::create();
-	filter_smart->set_name("");
+	filter_smart->set_name("SMART Files");
 	filter_smart->add_pattern("*.smart");
 	saveFile.add_filter(filter_smart);
 	
 	auto filter_none = Gtk::FileFilter::create();
-	filter_none->set_name("");
+	filter_none->set_name("All Files");
 	filter_none->add_pattern("*");
 	saveFile.add_filter(filter_none);
 	
-	saveFile.set_filename("untitled.smart");
+	saveFile.set_filename(filename);
 	
 	saveFile.add_button("_Cancel", 0);
 	saveFile.add_button("_Save", 1);
@@ -258,6 +313,7 @@ void Mainwin::on_save_as_click() {
 		try{
 			filename = saveFile.get_filename();
 			on_save_click();
+			
 		} catch(std::exception e) {
 			Gtk::MessageDialog{*this, "Could not save SMART"}.run();
 		}
@@ -265,20 +321,22 @@ void Mainwin::on_save_as_click() {
 }
 
 void Mainwin::on_open_click() {
+	on_new_school_click();
+	
 	Gtk::FileChooserDialog openFile("Please choose a file", Gtk::FileChooserAction::FILE_CHOOSER_ACTION_OPEN);
 	openFile.set_transient_for(*this);
 	
 	auto filter_smart = Gtk::FileFilter::create();
-	filter_smart->set_name("");
+	filter_smart->set_name("SMART Files");
 	filter_smart->add_pattern("*.smart");
 	openFile.add_filter(filter_smart);
 	
 	auto filter_none = Gtk::FileFilter::create();
-	filter_none->set_name("");
+	filter_none->set_name("All Files");
 	filter_none->add_pattern("*");
 	openFile.add_filter(filter_none);
 	
-	openFile.set_filename("untitled.smart");
+	openFile.set_filename(filename);
 	
 	openFile.add_button("_Cancel", 0);
 	openFile.add_button("_Open", 1);
@@ -287,25 +345,29 @@ void Mainwin::on_open_click() {
 	
 	if(button_press == 1){
 		try{
-			std::ifstream ifs{openFile.get_filename()};
+			filename = openFile.get_filename();
+			std::ifstream ifs{filename};
 			std::string s;
 			ifs >> s;
 			int size = stoi(s);
+			
 			for(int i = 0; i < size; i++){
-				new Student{ifs};
+				students.push_back(new Student{ifs});
 			}
 			size = 0;
 			
 			ifs >> s;
 			size = stoi(s);
 			for(int i = 0; i < size; i++){
-				new Parent{ifs};
+				parents.push_back(new Parent{ifs});
 			}
 			
 		} catch(std::exception e) {
 			Gtk::MessageDialog{*this, "Could not open SMART"}.run();
 		}
 	}
+	
+	show_data();
 }
 
 void Mainwin::on_about_click() {
@@ -318,8 +380,8 @@ void Mainwin::on_about_click() {
 	about.set_program_name("SMART");
 	
 	//Picking then setting logo picture
-	//auto logo = Gdk::Pixbuf::create_from_file("");
-	//about.set_logo(logo);
+	auto logo = Gdk::Pixbuf::create_from_file("logo.jpeg");
+	about.set_logo(logo);
 	
 	//Version Copyright and License setters
 	about.set_version("Version 0.0.3");
@@ -331,7 +393,10 @@ void Mainwin::on_about_click() {
 	about.set_authors(authors);
 	
 	//Labeling the artists
-	std::vector<Glib::ustring> artists = {"Phillip A. Welch"};
+	std::vector<Glib::ustring> artists =
+	 {"https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pngkey.com%2Fmaxpic%2Fu2e6y3t4u2i1w7w7%2F&psig=AOvVaw3C1bizgHGpQ5AK9SVncT1g&ust=1617188860212000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCMDCyJHw1-8CFQAAAAAdAAAAABAW", 
+	 "https://www.google.com/url?sa=i&url=https%3A%2F%2Ficon-icons.com%2Ficon%2Flink-programing-symbol-of-interface%2F105005&psig=AOvVaw1Hc2FRG6zKw3ZI87KFBw7b&ust=1617190464945000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCOizx-r21-8CFQAAAAAdAAAAABAD",
+	 "Phillip A. Welch"};
 	about.set_artists(artists);
 	
 	//Running the About dialog

@@ -5,6 +5,7 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
+#include <istream>
 
 #include "entrydialog.h"
 #include "parent.h"

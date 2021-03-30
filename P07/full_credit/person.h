@@ -5,6 +5,7 @@
 #include <ostream>
 #include <fstream>
 #include <string>
+#include <istream>
 
 class Person {
 public:
