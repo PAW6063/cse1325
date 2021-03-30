@@ -102,7 +102,7 @@ Mainwin::Mainwin() {
 	 //TOOLBAR HERE
 	 //Toolbar build
 	 Gtk::Toolbar *tools = Gtk::manage(new Gtk::Toolbar);
-	 vbox->add(*tools);
+	 vbox->pack_start(*tools, Gtk::PACK_SHRINK, 0);
 	 
 	 //New School button
 	 Gtk::ToolButton *new_school_button = Gtk::manage(new Gtk::ToolButton(Gtk::Stock::NEW));
