@@ -1,7 +1,7 @@
 #include "section.h"
 
 
-Section::Section(Course course, Semester semester, int year) : _course{course}, 				_semester{semester}, _year{year} {}
+Section::Section(Course course, Semester semester, int year) : _course{course}, _semester{semester}, _year{year} {}
 
 Section::Section(std::istream& ist) : _course{ist}, _semester{load_semester(ist)} {
 	

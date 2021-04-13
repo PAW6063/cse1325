@@ -10,6 +10,7 @@
 #include "entrydialog.h"
 #include "parent.h"
 #include "student.h"
+#include "section.h"
 
 class Mainwin : public Gtk::Window {
 public :
@@ -41,6 +42,9 @@ private :
 	std::vector <Parent*> parents;
 	//Added Attribute for sprint 3
 	std::string filename;
+	//Added Attributes for sprint 4
+	std::vector<Course*> _courses;
+	std::vector<Section*> _sections;
 	
 	void show_data();
 };

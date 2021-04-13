@@ -11,7 +11,7 @@ Mainwin::Mainwin() {
 	 filename = "untitled.smart";
 	 
 	 //Set window
-	 set_default_size(400, 400);
+	 set_default_size(600, 400);
 	 set_title("SMART");
 	 
 	 //What goes into window
@@ -85,18 +85,6 @@ Mainwin::Mainwin() {
 	 menuItem_section->signal_activate().connect([this] {this->on_new_section_click();});
 	 insertMenu->append(*menuItem_section);
 	 
-	 //RELATE
-	 //Relate
-	 Gtk::MenuItem *menuItem_relate = Gtk::manage(new Gtk::MenuItem("_Relate", true));
-	 menu->append(*menuItem_relate);
-	 Gtk::Menu *relateMenu = Gtk::manage(new Gtk::Menu());
-	 menuItem_relate->set_submenu(*relateMenu);
-	 
-	 //Student to Parents
-	 Gtk::MenuItem *menuItem_student_parent = Gtk::manage(new Gtk::MenuItem("_Student to Parent", true));
-	 menuItem_student_parent->signal_activate().connect([this] {this->on_student_parent_click();});
-	 relateMenu->append(*menuItem_student_parent);
-	 
 	 //VIEW
 	 //View
 	 Gtk::MenuItem *menuItem_view = Gtk::manage(new Gtk::MenuItem("_View", true));
@@ -124,6 +112,18 @@ Mainwin::Mainwin() {
 	 menuItem_view_sections->signal_activate().connect([this] {this->on_view_sections_click();});
 	 viewMenu->append(*menuItem_view_sections);
 	 
+	 //RELATE
+	 //Relate
+	 Gtk::MenuItem *menuItem_relate = Gtk::manage(new Gtk::MenuItem("_Relate", true));
+	 menu->append(*menuItem_relate);
+	 Gtk::Menu *relateMenu = Gtk::manage(new Gtk::Menu());
+	 menuItem_relate->set_submenu(*relateMenu);
+	 
+	 //Student to Parents
+	 Gtk::MenuItem *menuItem_student_parent = Gtk::manage(new Gtk::MenuItem("_Student to Parent", true));
+	 menuItem_student_parent->signal_activate().connect([this] {this->on_student_parent_click();});
+	 relateMenu->append(*menuItem_student_parent);
+
 	 //HELP
 	 //Help
 	 Gtk::MenuItem *menuItem_help = Gtk::manage(new Gtk::MenuItem("_Help", true));
@@ -190,6 +190,23 @@ Mainwin::Mainwin() {
 	 relate_button->signal_clicked().connect([this] {this->on_student_parent_click();});
 	 tools->append(*relate_button);
 	 
+	 //Separator
+	 Gtk::SeparatorToolItem *sep2 = Gtk::manage(new Gtk::SeparatorToolItem());
+	 tools->append(*sep2);
+	 
+	 //New COurse
+	 Gtk::Image *new_course_image = Gtk::manage(new Gtk::Image{""});
+	 Gtk::ToolButton *new_course_button = Gtk::manage(new Gtk::ToolButton(*new_course_image));
+	 new_course_button->set_tooltip_markup("Add new course.");
+	 new_course_button->signal_clicked().connect([this] {this->on_new_course_click();});
+	 tools->append(*new_course_button);
+	 
+	 //New Section
+	 Gtk::Image *new_section_image = Gtk::manage(new Gtk::Image{""});
+	 Gtk::ToolButton *new_section_button = Gtk::manage(new Gtk::ToolButton(*new_section_image));
+	 new_section_button->set_tooltip_markup("Add new section.");
+	 new_section_button->signal_clicked().connect([this] {this->on_new_section_click();});
+	 tools->append(*new_section_button);
 	  
 	 //DISPLAY
 	 display = Gtk::manage(new Gtk::Label());
@@ -246,7 +263,23 @@ void Mainwin::on_new_parent_click() {
 	show_data();
 }
 
-void Mainwin::on_new_course_click() {}
+void Mainwin::on_new_course_click() {
+	std::map<int, Subject> list = { {0, Subject::READING}, {1, Subject::WRITING}, {2, Subject::MATH}, {3, Subject::SCIENCE}, {4, Subject::HISTORY}, {5, Subject::EXTRA}, {6, Subject::NOTLISTED} };
+	
+	EntryDialog subject{*this, "<big><b>Select Subject</b></big>", true};
+	
+	std::string s_string = "";
+	for(int i = 0; i < 6; i++) {
+		s_string += std::to_string(i) + ")" + to_string(list[i]) + "\n";
+	}
+	subject.set_secondary_text(s_string, false);
+	subject.set_text("#");
+	subject.run();
+	
+	EntryDialog entry_grade{*this, "<big><b>Grade (1-12)</b></big>", true}; entry_grade.set_text("Enter grade number!"); entry_grade.run();
+	
+	_courses.push_back(new Course{ list[ std::stoi( subject.get_text() ) ], std::stoi(entry_grade.get_text())});
+}
 
 void Mainwin::on_new_section_click() {}
 
