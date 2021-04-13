@@ -246,9 +246,9 @@ void Mainwin::on_new_parent_click() {
 	show_data();
 }
 
-void Mainwin::on_new_course_click() {}
+void on_new_course_click() {}
 
-void Mainwin::on_new_section_click() {}
+void on_new_section_click() {}
 
 void Mainwin::on_student_parent_click() {
 	EntryDialog student{*this, "<big><b>Select Student</b></big>", true};
@@ -284,14 +284,6 @@ void Mainwin::on_student_parent_click() {
 	
 	
 }
-
-void Mainwin::on_view_students_click() {}
-
-void Mainwin::on_view_parents_click() {}
- 
-void Mainwin::on_view_courses_click() {}
- 
-void Mainwin::on_view_sections_click() {}
 
 void Mainwin::on_quit_click() {
 	close();
