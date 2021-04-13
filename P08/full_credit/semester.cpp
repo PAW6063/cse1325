@@ -3,7 +3,7 @@
 
 std::string to_string(Semester s) {
 	std::map<Semester, std::string> m = { {Semester::FALL, "fall"}, {Semester::SPRING, "spring"},
-	{Semester::SUMMER, "summer"} };
+	{Semester::SUMMER, "summer"}, {Semester::NONE, "none"} };
 	 
 	 return m[s];
 }
@@ -14,13 +14,16 @@ std::ostream& operator<<(std::ostream& ost, const Semester& semester) {
 	return ost;
 }
 
-Semester load_semester(istream& ist) {
-	std::string s;
-	ist >> s;
+Semester load_semester(std::istream& ist) {
 	
-	switch(s){
-		case "fall" : return Semester::FALL;
-		case "spring" : return Semester::SPRING;
-		case "summer" : return Semester::SUMMER;
-	}
+	std::string s;
+	
+	std::getline(ist, s); ist.ignore(32767, '\n');
+	
+	if(s.compare("fall") == 0) return Semester::FALL;
+	if(s.compare("spring") == 0) return Semester::SPRING;
+	if(s.compare("summer") == 0) return Semester::SUMMER;
+	
+	
+	return Semester::NONE;
 }

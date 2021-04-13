@@ -75,6 +75,16 @@ Mainwin::Mainwin() {
 	 menuItem_new_parent->signal_activate().connect([this] {this->on_new_parent_click();});
 	 insertMenu->append(*menuItem_new_parent);
 	 
+	 //New Course
+	 Gtk::MenuItem *menuItem_course = Gtk::manage(new Gtk::MenuItem("_New Course", true));
+	 menuIem_course->signal_activate().connect([this] {this->on_new_course_click();});
+	 insertMenu->append(*menuIem_course);
+	 
+	 //New Section
+	 Gtk::MenuItem *menuItem_section = Gtk::manage(new Gtk::MenuItem("_New Section", true));
+	 menuIem_section->signal_activate().connect([this] {this->on_new_section_click();});
+	 insertMenu->append(*menuIem_section);
+	 
 	 //RELATE
 	 //Relate
 	 Gtk::MenuItem *menuItem_relate = Gtk::manage(new Gtk::MenuItem("_Relate", true));

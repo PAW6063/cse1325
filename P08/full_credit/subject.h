@@ -2,9 +2,10 @@
 #define _SUBJECT_H
 
 #include <iostream>
+#include <string>
 #include <map>
 
-enum class Subject {READING, WRITING, MATH, SCIENCE, HISTORY, EXTRA};
+enum class Subject {READING, WRITING, MATH, SCIENCE, HISTORY, EXTRA, NOTLISTED};
 
 std::string to_string(Subject s);
 

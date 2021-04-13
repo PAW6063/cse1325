@@ -4,12 +4,12 @@
 #include <iostream>
 #include <map>
 
-enum class Semester {FALL, SPRING, SUMMER};
+enum class Semester {FALL, SPRING, SUMMER, NONE};
 
 std::string to_string(Semester s);
 
 std::ostream& operator<<(std::ostream& ost, const Semester& semester);
 
-Semester load_semester(istream& ist);
+Semester load_semester(std::istream& ist);
 
 #endif
