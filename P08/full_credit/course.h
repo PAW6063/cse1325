@@ -12,6 +12,7 @@ public :
 	Course(Subject subject, int grade);
 	Course(std::istream& ist);
 	void save(std::ostream& ost);
+	std::string course_print();
 	
 	friend std::ostream& operator<<(std::ostream& ost, const Course course);
 

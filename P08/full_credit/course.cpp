@@ -19,3 +19,12 @@ std::ostream& operator<<(std::ostream& ost, const Course course) {
 	
 	return ost;
 }
+
+std::string Course::course_print() {
+	std::string output = "";
+	
+	output += to_string(_subject) + " (grade " + std::to_string(_grade) + ")";
+	
+	return output;
+}
+

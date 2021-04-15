@@ -13,4 +13,6 @@ std::ostream& operator<<(std::ostream& ost, const Subject& subject);
 
 Subject load_subject(std::istream& ist);
 
+Subject subject_list(int num);
+
 #endif

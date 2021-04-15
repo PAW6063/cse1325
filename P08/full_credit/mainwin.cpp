@@ -247,7 +247,7 @@ void Mainwin::on_new_student_click() {
 	//**************************
 	students.push_back(new Student{entry_name.get_text(), entry_email.get_text(), g});
 	
-	show_data();
+	on_view_students_click();
 }
 
 void Mainwin::on_new_parent_click() {
@@ -260,28 +260,22 @@ void Mainwin::on_new_parent_click() {
 	//**************************
 	parents.push_back(new Parent{entry_name.get_text(), entry_email.get_text()});
 	
-	show_data();
+	on_view_parents_click();
 }
 
 void Mainwin::on_new_course_click() {
-	std::map<int, Subject> list = { {0, Subject::READING}, {1, Subject::WRITING}, {2, Subject::MATH}, {3, Subject::SCIENCE}, {4, Subject::HISTORY}, {5, Subject::EXTRA}, {6, Subject::NOTLISTED} };
 	
-	EntryDialog subject{*this, "<big><b>Select Subject</b></big>", true};
+	CourseDialog dialog{"Create Course", *this};
 	
-	std::string s_string = "";
-	for(int i = 0; i < 6; i++) {
-		s_string += std::to_string(i) + ")" + to_string(list[i]) + "\n";
+	int response;
+	if((response = dialog.run()) == Gtk::RESPONSE_OK) {
+		_courses.push_back( new Course{ dialog.get_subject(), dialog.get_grade() } );
 	}
-	subject.set_secondary_text(s_string, false);
-	subject.set_text("#");
-	subject.run();
 	
-	EntryDialog entry_grade{*this, "<big><b>Grade (1-12)</b></big>", true}; entry_grade.set_text("Enter grade number!"); entry_grade.run();
-	
-	_courses.push_back(new Course{ list[ std::stoi( subject.get_text() ) ], std::stoi(entry_grade.get_text())});
+	on_view_courses_click();
 }
 
-void Mainwin::on_new_section_click() {}
+void Mainwin::on_new_section_click() { on_view_sections_click(); }
 
 void Mainwin::on_student_parent_click() {
 	EntryDialog student{*this, "<big><b>Select Student</b></big>", true};
@@ -348,7 +342,7 @@ void Mainwin::on_view_courses_click() {
 	data += "\tCourses:\n";
 	if(_courses.size() > 0) {
 		for(auto & i : _courses) {
-		    std::cout << *i;
+		    data += i->course_print() + '\n';
 		}
 	}
 	show_data(data);

@@ -29,3 +29,13 @@ Subject load_subject(std::istream& ist) {
 	
 	return Subject::NOTLISTED;
 }
+
+Subject subject_list(int num) {
+	std::map<int, Subject> list = { {0, Subject::READING}, {1, Subject::WRITING}, {2, Subject::MATH}, {3, Subject::SCIENCE}, {4, Subject::HISTORY}, {5, Subject::EXTRA}, {6, Subject::NOTLISTED} };
+	
+	if((num > -1) && (num < 7)) {
+		return list[num];
+	}
+	
+	return list[6];
+}
