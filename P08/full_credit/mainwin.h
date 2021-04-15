@@ -46,6 +46,7 @@ private :
 	std::vector<Course*> _courses;
 	std::vector<Section*> _sections;
 	
+	void show_data(std::string data);
 	void show_data();
 };
 

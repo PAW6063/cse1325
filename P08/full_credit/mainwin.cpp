@@ -318,11 +318,41 @@ void Mainwin::on_student_parent_click() {
 	
 }
 
-void Mainwin::on_view_students_click() {}
+void Mainwin::on_view_students_click() {
+	std::string data = "";
+	
+	data += "\tStudents:\n";
+	if(students.size() > 0) {
+		for(auto & i : students) {
+		    data += i->full_info() + "\n";
+		}
+	}
+	show_data(data);
+}
 
-void Mainwin::on_view_parents_click() {}
+void Mainwin::on_view_parents_click() {
+	std::string data = "";
+	
+	data += "\n\tParents:\n";
+	if(parents.size() > 0) {
+		for(auto & i : parents) {
+			data += i->full_info() + "\n";
+		}
+	}
+	show_data(data);
+}
  
-void Mainwin::on_view_courses_click() {}
+void Mainwin::on_view_courses_click() {
+	std::string data = "";
+	
+	data += "\tCourses:\n";
+	if(_courses.size() > 0) {
+		for(auto & i : _courses) {
+		    std::cout << *i;
+		}
+	}
+	show_data(data);
+}
  
 void Mainwin::on_view_sections_click() {}
 
@@ -331,7 +361,7 @@ void Mainwin::on_quit_click() {
 }
 
 void Mainwin::show_data() {
-	Glib::ustring data = "";
+	std::string data = "";
 	
 	data += "\tStudents:\n";
 	if(students.size() > 0) {
@@ -349,6 +379,8 @@ void Mainwin::show_data() {
 	
 	display->set_markup(data);
 }
+
+void Mainwin::show_data(std::string data) { display->set_markup(data); }
 
 void Mainwin::on_save_click() {
 	std::ofstream ofs{filename};
