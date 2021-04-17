@@ -12,6 +12,8 @@ public:
 	Section(Course course, Semester semester, int year);
 	Section(std::istream& ist);
 	void save(std::ostream& ost);
+	std::string section_print();
+	
 	friend std::ostream& operator<<(std::ostream& ost, const Section section);
 private:
 	Course _course;

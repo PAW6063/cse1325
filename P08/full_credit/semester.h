@@ -12,4 +12,6 @@ std::ostream& operator<<(std::ostream& ost, const Semester& semester);
 
 Semester load_semester(std::istream& ist);
 
+Semester semester_list(int num);
+
 #endif

@@ -27,3 +27,13 @@ Semester load_semester(std::istream& ist) {
 	
 	return Semester::NONE;
 }
+
+Semester semester_list(int num) {
+	std::map<int, Semester> list = { {0, Semester::FALL}, {1, Semester::SPRING}, {2, Semester::SUMMER}, {3, Semester::NONE} };
+	
+	if( (num > -1) && (num < 3) ) {
+		return list[num];
+	}
+	
+	return list[3];
+}

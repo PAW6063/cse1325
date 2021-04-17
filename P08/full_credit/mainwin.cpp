@@ -275,7 +275,17 @@ void Mainwin::on_new_course_click() {
 	on_view_courses_click();
 }
 
-void Mainwin::on_new_section_click() { on_view_sections_click(); }
+void Mainwin::on_new_section_click() { 
+	
+	//SectionDialog dialog{"Create Section", *this};
+	
+	int response;
+	//if((response = dialog.run()) == Gtk::RESPONSE_OK) {
+		//_sections.push_back( new Section{ , ,  } );
+	//}
+	
+	on_view_sections_click();
+}
 
 void Mainwin::on_student_parent_click() {
 	EntryDialog student{*this, "<big><b>Select Student</b></big>", true};
@@ -315,7 +325,7 @@ void Mainwin::on_student_parent_click() {
 void Mainwin::on_view_students_click() {
 	std::string data = "";
 	
-	data += "\tStudents:\n";
+	data += "<big><b>Students:</b></big>\n";
 	if(students.size() > 0) {
 		for(auto & i : students) {
 		    data += i->full_info() + "\n";
@@ -327,7 +337,7 @@ void Mainwin::on_view_students_click() {
 void Mainwin::on_view_parents_click() {
 	std::string data = "";
 	
-	data += "\n\tParents:\n";
+	data += "<big><b>Parents:</b></big>\n";
 	if(parents.size() > 0) {
 		for(auto & i : parents) {
 			data += i->full_info() + "\n";
@@ -339,7 +349,7 @@ void Mainwin::on_view_parents_click() {
 void Mainwin::on_view_courses_click() {
 	std::string data = "";
 	
-	data += "\tCourses:\n";
+	data += "<big><b>Courses:</b></big>\n";
 	if(_courses.size() > 0) {
 		for(auto & i : _courses) {
 		    data += i->course_print() + '\n';
@@ -348,7 +358,16 @@ void Mainwin::on_view_courses_click() {
 	show_data(data);
 }
  
-void Mainwin::on_view_sections_click() {}
+void Mainwin::on_view_sections_click() {
+	std::string data = "";
+	
+	data += "<big><b>Sections:</b></big>\n";
+	if(_sections.size() > 0) {
+		for(auto & i : _sections) {
+		    data += i->section_print() + '\n';
+		}
+	}
+	show_data(data);}
 
 void Mainwin::on_quit_click() {
 	close();

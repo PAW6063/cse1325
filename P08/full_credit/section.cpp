@@ -20,3 +20,11 @@ std::ostream& operator<<(std::ostream& ost, const Section section) {
 	
 	return ost;
 }
+
+std::string Section::section_print() {
+	std::string output = "";
+	
+	output += _course.course_print() + " for" + to_string(_semester) + std::to_string(_year);
+	
+	return output;
+}
