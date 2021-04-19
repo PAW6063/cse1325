@@ -195,14 +195,14 @@ Mainwin::Mainwin() {
 	 tools->append(*sep2);
 	 
 	 //New COurse
-	 Gtk::Image *new_course_image = Gtk::manage(new Gtk::Image{""});
+	 Gtk::Image *new_course_image = Gtk::manage(new Gtk::Image{"add_c.png"});
 	 Gtk::ToolButton *new_course_button = Gtk::manage(new Gtk::ToolButton(*new_course_image));
 	 new_course_button->set_tooltip_markup("Add new course.");
 	 new_course_button->signal_clicked().connect([this] {this->on_new_course_click();});
 	 tools->append(*new_course_button);
 	 
 	 //New Section
-	 Gtk::Image *new_section_image = Gtk::manage(new Gtk::Image{""});
+	 Gtk::Image *new_section_image = Gtk::manage(new Gtk::Image{"add_s.png"});
 	 Gtk::ToolButton *new_section_button = Gtk::manage(new Gtk::ToolButton(*new_section_image));
 	 new_section_button->set_tooltip_markup("Add new section.");
 	 new_section_button->signal_clicked().connect([this] {this->on_new_section_click();});
@@ -595,7 +595,7 @@ void Mainwin::on_about_click() {
 	about.set_program_name("SMART");
 	
 	//Picking then setting logo picture
-	auto logo = Gdk::Pixbuf::create_from_file("logo.jpeg");
+	auto logo = Gdk::Pixbuf::create_from_file("logo.png");
 	about.set_logo(logo);
 	
 	//Version Copyright and License setters
@@ -609,9 +609,7 @@ void Mainwin::on_about_click() {
 	
 	//Labeling the artists
 	std::vector<Glib::ustring> artists =
-	 {"https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pngkey.com%2Fmaxpic%2Fu2e6y3t4u2i1w7w7%2F&psig=AOvVaw3C1bizgHGpQ5AK9SVncT1g&ust=1617188860212000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCMDCyJHw1-8CFQAAAAAdAAAAABAW", 
-	 "https://www.google.com/url?sa=i&url=https%3A%2F%2Ficon-icons.com%2Ficon%2Flink-programing-symbol-of-interface%2F105005&psig=AOvVaw1Hc2FRG6zKw3ZI87KFBw7b&ust=1617190464945000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCOizx-r21-8CFQAAAAAdAAAAABAD",
-	 "Phillip A. Welch"};
+	 {"Phillip A. Welch"};
 	about.set_artists(artists);
 	
 	//Running the About dialog
