@@ -209,7 +209,7 @@ Mainwin::Mainwin() {
 	 tools->append(*new_section_button);
 	  
 	 //DISPLAY
-	 display = Gtk::manage(new Gtk::Label());
+	 display = Gtk::manage(new Gtk::Label{"", Gtk::ALIGN_START, Gtk::ALIGN_START});
 	 display->set_hexpand(true);
 	 display->set_vexpand(true);
 	 vbox->add(*display);
@@ -217,7 +217,7 @@ Mainwin::Mainwin() {
 	 //Showing everything
 	 vbox->show_all();
 	 
-	 show_data();
+	 on_view_students_click();
 }
 
 Mainwin::~Mainwin() {}
@@ -226,39 +226,81 @@ void Mainwin::on_new_school_click() {
 	
 	students.clear();
 	parents.clear();
+	_courses.clear();
+	_sections.clear();
 	
-	show_data();
+	on_view_students_click();
 }
 
 void Mainwin::on_new_student_click() {
 	
-	EntryDialog entry_name{*this, "<big><b>Student name?</b></big>", true}; entry_name.set_text("Enter name!"); entry_name.run();
-	EntryDialog entry_email{*this, "<big><b>Student email?</b></big>", true}; entry_email.set_text("Enter email!"); entry_email.run();
-	EntryDialog entry_grade{*this, "<big><b>Student grade?</b></big>", true}; entry_grade.set_text("Enter grade number!"); entry_grade.run();
+
+	Gtk::Dialog dialog{"Student Info", *this};
+	Gtk::Grid plot;
 	
-	std::stringstream grade;
-	int g;
-	grade << entry_grade.get_text().raw();
-	grade >> g;
+	Gtk::Label l_name{"Enter Name"};
+	Gtk::Entry e_name;
 	
+	plot.attach(l_name, 0, 0, 1, 1);
+	plot.attach(e_name, 1, 0, 2, 1);
 	
-	//**************************
-	//ADDS NEW STUDENT TO HEAP
-	//**************************
-	students.push_back(new Student{entry_name.get_text(), entry_email.get_text(), g});
+	Gtk::Label l_email{"Enter Email"};
+	Gtk::Entry e_email;
+	
+	plot.attach(l_email, 0, 1, 1, 1);
+	plot.attach(e_email, 1, 1, 2, 1);
+	
+	Gtk::Label l_grade;
+	Gtk::SpinButton s_b_grade;
+	
+	s_b_grade.set_range(1, 12);
+	s_b_grade.set_increments(1, 1);
+	s_b_grade.set_value(1);
+	
+	plot.attach(l_grade, 0, 2, 1, 1);
+	plot.attach(s_b_grade, 1, 2, 2, 1);
+	
+	dialog.get_content_area()->pack_start(plot);
+	
+	dialog.add_button("Select", Gtk::RESPONSE_OK);
+	dialog.add_button("Cancel", Gtk::RESPONSE_CANCEL);
+	
+	dialog.show_all();
+	int response;
+	if((response = dialog.run()) == Gtk::RESPONSE_OK) {
+		students.push_back( new Student{ e_name.get_text(), e_email.get_text(), s_b_grade.get_value_as_int() } );
+	}
 	
 	on_view_students_click();
 }
 
 void Mainwin::on_new_parent_click() {
 	
-	EntryDialog entry_name{*this, "<big><b>Parent name?</b></big>", true}; entry_name.set_text("Enter name!"); entry_name.run();
-	EntryDialog entry_email{*this, "<big><b>Parent email?</b></big>", true}; entry_email.set_text("Enter email!"); entry_email.run();
+	Gtk::Dialog dialog{"Parent Info", *this};
+	Gtk::Grid plot;
 	
-	//**************************
-	//ADDS NEW PARENT TO HEAP
-	//**************************
-	parents.push_back(new Parent{entry_name.get_text(), entry_email.get_text()});
+	Gtk::Label l_name{"Enter Name"};
+	Gtk::Entry e_name;
+	
+	plot.attach(l_name, 0, 0, 1, 1);
+	plot.attach(e_name, 1, 0, 2, 1);
+	
+	Gtk::Label l_email{"Enter Email"};
+	Gtk::Entry e_email;
+	
+	plot.attach(l_email, 0, 1, 1, 1);
+	plot.attach(e_email, 1, 1, 2, 1);
+	
+	dialog.get_content_area()->pack_start(plot);
+	
+	dialog.add_button("Select", Gtk::RESPONSE_OK);
+	dialog.add_button("Cancel", Gtk::RESPONSE_CANCEL);
+	
+	dialog.show_all();
+	int response;
+	if((response = dialog.run()) == Gtk::RESPONSE_OK) {
+		parents.push_back( new Parent{ e_name.get_text(), e_email.get_text() } );
+	}
 	
 	on_view_parents_click();
 }
@@ -277,13 +319,58 @@ void Mainwin::on_new_course_click() {
 
 void Mainwin::on_new_section_click() { 
 	
-	//SectionDialog dialog{"Create Section", *this};
-	
-	int response;
-	//if((response = dialog.run()) == Gtk::RESPONSE_OK) {
-		//_sections.push_back( new Section{ , ,  } );
-	//}
-	
+	if(_courses.size() >= 1) {
+		Gtk::Dialog dialog{"Create Section", *this};
+		Gtk::Grid plot;
+		
+		Gtk::Label l_course{"Select Course"};
+		Gtk::ComboBoxText c_course;
+		
+		for(int i = 0; i < _courses.size(); i++) {
+			c_course.append(_courses[i]->course_print());
+		}
+		
+		c_course.set_active(0);
+		
+		plot.attach(l_course, 0, 0, 1, 1);
+		plot.attach(c_course, 1, 0, 2, 1);
+		
+		Gtk::Label l_semester{"Select Semester"};
+		Gtk::ComboBoxText c_semester;
+		
+		for(int i = 0; i < 4; i++) {
+			c_semester.append(to_string(semester_list(i)));
+		}
+		
+		c_semester.set_active(3);
+		
+		plot.attach(l_semester, 0, 1, 1, 1);
+		plot.attach(c_semester, 1, 1, 2, 1);
+		
+		Gtk::Label l_year;
+		Gtk::SpinButton s_b_year;
+		
+		s_b_year.set_range(2000, 2100);
+		s_b_year.set_increments(1, 5);
+		s_b_year.set_value(2021);
+		
+		plot.attach(l_year, 0, 2, 1, 1);
+		plot.attach(s_b_year, 1, 2, 2, 1);
+		
+		dialog.get_content_area()->pack_start(plot);
+		
+		dialog.add_button("Select", Gtk::RESPONSE_OK);
+		dialog.add_button("Cancel", Gtk::RESPONSE_CANCEL);
+		
+		dialog.show_all();
+		int response;
+		if((response = dialog.run()) == Gtk::RESPONSE_OK) {
+			_sections.push_back( new Section{ *_courses[c_course.get_active_row_number()], semester_list(c_semester.get_active_row_number()), s_b_year.get_value_as_int() } );
+		}
+	} else { 
+		Gtk::MessageDialog error{ *this, "No Courses Available"};
+		error.run();
+	}
 	on_view_sections_click();
 }
 
@@ -317,7 +404,7 @@ void Mainwin::on_student_parent_click() {
 	students[s]->add_parent(*parents[p]);
 	parents[p]->add_student(*students[s]);
 	
-	show_data();
+	on_view_students_click();
 	
 	
 }
@@ -373,26 +460,6 @@ void Mainwin::on_quit_click() {
 	close();
 }
 
-void Mainwin::show_data() {
-	std::string data = "";
-	
-	data += "\tStudents:\n";
-	if(students.size() > 0) {
-		for(auto & i : students) {
-		    data += i->full_info() + "\n";
-		}
-	}
-	
-	data += "\n\tParents:\n";
-	if(parents.size() > 0) {
-		for(auto & i : parents) {
-			data += i->full_info() + "\n";
-		}
-	}
-	
-	display->set_markup(data);
-}
-
 void Mainwin::show_data(std::string data) { display->set_markup(data); }
 
 void Mainwin::on_save_click() {
@@ -408,9 +475,22 @@ void Mainwin::on_save_click() {
 		
 		ofs << std::to_string(parents.size()) << std::endl;
 		
-		for(int i = 0; i < students.size(); i++){
+		for(int i = 0; i < parents.size(); i++){
 			parents[i]->Parent::save(ofs);
 		}
+		
+		ofs << std::to_string(_courses.size()) << std::endl;
+		
+		for(int i = 0; i < _courses.size(); i++) {
+			_courses[i]->Course::save(ofs);
+		}
+		
+		ofs << std::to_string(_sections.size()) << std::endl;
+		
+		for(int i = 0; i < _sections.size(); i++) {
+			_sections[i]->Section::save(ofs);
+		}
+		
 	} catch(std::exception e) {}
 	
 }
@@ -474,19 +554,27 @@ void Mainwin::on_open_click() {
 		try{
 			filename = openFile.get_filename();
 			std::ifstream ifs{filename};
-			std::string s;
-			ifs >> s;
-			int size = stoi(s);
+			
+			int size;
+			ifs >> size;  ifs.ignore(32767, '\n');
 			
 			for(int i = 0; i < size; i++){
 				students.push_back(new Student{ifs});
 			}
-			size = 0;
 			
-			ifs >> s;
-			size = stoi(s);
+			ifs >> size;  ifs.ignore(32767, '\n');
 			for(int i = 0; i < size; i++){
 				parents.push_back(new Parent{ifs});
+			}
+			
+			ifs >> size;  ifs.ignore(32767, '\n');
+			for(int i = 0; i < size; i++) {
+				_courses.push_back(new Course{ifs});
+			}
+			
+			ifs >> size;  ifs.ignore(32767, '\n');
+			for(int i = 0; i < size; i++) {
+				_sections.push_back(new Section{ifs});
 			}
 			
 		} catch(std::exception e) {
@@ -494,7 +582,7 @@ void Mainwin::on_open_click() {
 		}
 	}
 	
-	show_data();
+		on_view_students_click();
 }
 
 void Mainwin::on_about_click() {
@@ -529,12 +617,6 @@ void Mainwin::on_about_click() {
 	//Running the About dialog
 	about.run();
 }
-
-
-
-
-
-
 
 
 

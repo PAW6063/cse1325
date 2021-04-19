@@ -18,7 +18,7 @@ Subject load_subject(std::istream& ist) {
 	
 	std::string s;
 	
-	std::getline(ist, s); ist.ignore(32767, '\n');
+	std::getline(ist, s);
 	
 	if(s.compare("reading") == 0) return Subject::READING;
 	if(s.compare("writing") == 0) return Subject::WRITING;

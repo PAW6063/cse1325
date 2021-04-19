@@ -3,7 +3,8 @@
 Person::Person(std::string name, std::string email) : _name{name}, _email{email} { }
 
 Person::Person(std::istream& ist) {
-	ist >> _name >> _email;
+	getline(ist, _name);
+	getline(ist,_email);
 }
 
 std::string Person::to_string() {

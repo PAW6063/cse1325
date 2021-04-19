@@ -4,9 +4,8 @@
 Student::Student(std::string name, std::string email, int grade) : Person{name, email}, _grade{grade} {	}
 
 Student::Student(std::istream& ist) : Person{ist} {
-	std::string grade;
-	ist >> grade;
-	_grade = stoi(grade);
+	
+	ist >> _grade; ist.ignore(32767, '\n');
 }
 
 void Student::add_parent(Parent& parent) { _parents.push_back(&parent); }

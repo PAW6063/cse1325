@@ -18,7 +18,7 @@ Semester load_semester(std::istream& ist) {
 	
 	std::string s;
 	
-	std::getline(ist, s); ist.ignore(32767, '\n');
+	std::getline(ist, s);
 	
 	if(s.compare("fall") == 0) return Semester::FALL;
 	if(s.compare("spring") == 0) return Semester::SPRING;

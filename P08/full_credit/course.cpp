@@ -3,8 +3,9 @@
 
 Course::Course(Subject subject, int grade) : _subject{subject}, _grade{grade} {}
 
-Course::Course(std::istream& ist) : _subject{load_subject(ist)} {
+Course::Course(std::istream& ist) {
 	
+	_subject = load_subject(ist);
 	ist >> _grade; ist.ignore(32767, '\n');
 }
 

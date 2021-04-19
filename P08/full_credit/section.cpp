@@ -3,9 +3,9 @@
 
 Section::Section(Course course, Semester semester, int year) : _course{course}, _semester{semester}, _year{year} {}
 
-Section::Section(std::istream& ist) : _course{ist}, _semester{load_semester(ist)} {
-	
-	ist >> _year;
+Section::Section(std::istream& ist) : _course{ist} {
+	_semester = load_semester(ist);
+	ist >> _year; ist.ignore(32767, '\n');
 }
 
 void Section::save(std::ostream& ost) {
@@ -24,7 +24,7 @@ std::ostream& operator<<(std::ostream& ost, const Section section) {
 std::string Section::section_print() {
 	std::string output = "";
 	
-	output += _course.course_print() + " for" + to_string(_semester) + std::to_string(_year);
+	output += _course.course_print() + " for " + to_string(_semester) + " " + std::to_string(_year);
 	
 	return output;
 }
